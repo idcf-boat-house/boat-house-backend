@@ -252,7 +252,7 @@ mvn clean test
 /path/project/target/site/jacoco-it
 
 ## 比如找到下面的路径的html(这个是我本地)
-/home/idcf-house/boat-house/product-service/api/target/site/jacoco-it
+/home/idcf-house/boat-house/src/product-service/api/target/site/jacoco-it
 ```
 
 打开输出目录的index.html查看执行覆盖率报告结果:
@@ -501,9 +501,9 @@ services:
 4. 根据上述的pom文件配置以及maven的插件,在执行构建打包的时候会输出Java Code Coverage的测试报告结果.只需要将报告结果export出来,即在JenkinsFile的构建步骤中增加输出报告的结果,即如下:
 
 ```bash
-## product-service项目使用maven进行构建输出报告目录: ./product-service/api/target/site/jacoco-it
+## product-service项目使用maven进行构建输出报告目录: ./src/product-service/api/target/site/jacoco-it
 ## 在JenkinsFile下的构建build-product-service的步骤最后增加以下命令即可
-publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: './product-service/api/target/site/jacoco-it', reportFiles: 'index.html', reportName: 'Junit Report', reportTitles: ''])
+publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: './src/product-service/api/target/site/jacoco-it', reportFiles: 'index.html', reportName: 'Junit Report', reportTitles: ''])
 ```
 
 最后只需要在Jenkins上构建流水线,等待单元测试报告的结果输出即可,如下:

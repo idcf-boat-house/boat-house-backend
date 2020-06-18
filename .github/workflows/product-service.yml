@@ -12,7 +12,7 @@ jobs:
         run: env
 
       - name: docker build product-service
-        run: docker build -f product-service/api/Dockerfile -t docker.pkg.github.com/${GITHUB_REPOSITORY}/product_service_api:action-${GITHUB_REF##*/}-ci-${GITHUB_RUN_NUMBER} -t docker.pkg.github.com/${GITHUB_REPOSITORY}/product_service_api:action-ci product-service/api 
+        run: docker build -f src/product-service/api/Dockerfile -t docker.pkg.github.com/${GITHUB_REPOSITORY}/product_service_api:action-${GITHUB_REF##*/}-ci-${GITHUB_RUN_NUMBER} -t docker.pkg.github.com/${GITHUB_REPOSITORY}/product_service_api:action-ci src/product-service/api 
 
       - name: docker images 
         run: docker images

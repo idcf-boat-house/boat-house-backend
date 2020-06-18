@@ -75,7 +75,7 @@ services:
         command: --default-authentication-plugin=mysql_native_password
         restart: always
         volumes:
-            - ./product-service/api/scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+            - ./src/product-service/api/scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
         ports:
             - 3306:3306
         environment:
