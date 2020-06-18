@@ -25,12 +25,13 @@ pipeline {
 
     stages {
          // clean workspace
+         /*
          stage('delete files from workspace') {
           steps {
             sh 'ls -l'
             sh 'sudo rm -rf ./*'
           }
-        }
+        }*/
 
         // 
         stage('before-build'){
