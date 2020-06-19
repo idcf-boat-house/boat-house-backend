@@ -130,7 +130,7 @@ pipeline {
                 echo "successfully started!"
               }
             }
-        }
+        } 
 
       
         stage('Jmeter') {
