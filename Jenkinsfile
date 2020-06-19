@@ -117,6 +117,7 @@ pipeline {
                 sshCommand remote: server, command: "mkdir -p src/product-service/api/scripts"
                 sshPut remote: server, from: 'src/product-service/api/scripts/init.sql', into: './src/product-service/api/scripts/init.sql'
 
+                // 下面的 docker-compose-template.yaml 已经复制到根目录下，不用再调整
                 echo "stopping previous docker containers...."       
                 sshCommand remote: server, command: "docker login docker.pkg.github.com -u ${CREDS_GITHUB_REGISTRY_USR} -p ${CREDS_GITHUB_REGISTRY_PSW}"
                 sshCommand remote: server, command: "docker-compose -f docker-compose-template.yaml -p boathouse down"
@@ -137,13 +138,13 @@ pipeline {
             script{
                 echo "waitting for the sevice up...."
                 sleep 80
-                sh "ls -al ./jmeter"
-                sh "cd jmeter && find . -name '*.log' -delete"
-                sh "rm -R ./jmeter/output || exit 0"
-                sh "mkdir ./jmeter/output"
+                sh "ls -al ./test/jmeter"
+                sh "cd test/jmeter && find . -name '*.log' -delete"
+                sh "rm -R ./test/jmeter/output || exit 0"
+                sh "mkdir ./test/jmeter/output"
                 sh "docker run --interactive --rm --volume `pwd`/jmeter:/jmeter egaillardon/jmeter --nongui --testfile boat-house.jmx --logfile output/result.jtl -Jdomain=${BOATHOUSE_DEV_HOST} -e -o ./output"
                 sh "ls -al ./jmeter"
-                publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: './jmeter/output', reportFiles: 'index.html', reportName: 'Jmeter Report', reportTitles: ''])
+                publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: './test/jmeter/output', reportFiles: 'index.html', reportName: 'Jmeter Report', reportTitles: ''])
             }
           }
         }
