@@ -142,7 +142,7 @@ pipeline {
                 sh "cd test/jmeter && find . -name '*.log' -delete"
                 sh "rm -R ./test/jmeter/output || exit 0"
                 sh "mkdir ./test/jmeter/output"
-                sh "docker run --interactive --rm --volume `pwd`/jmeter:/test/jmeter egaillardon/jmeter --nongui --testfile boat-house.jmx --logfile output/result.jtl -Jdomain=${BOATHOUSE_DEV_HOST} -e -o ./output"
+                sh "docker run --interactive --rm --volume `pwd`/test/jmeter:/jmeter egaillardon/jmeter --nongui --testfile boat-house.jmx --logfile output/result.jtl -Jdomain=${BOATHOUSE_DEV_HOST} -e -o ./output"
                 sh "ls -al ./jmeter"
                 publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: './test/jmeter/output', reportFiles: 'index.html', reportName: 'Jmeter Report', reportTitles: ''])
             }
