@@ -109,23 +109,23 @@ pipeline {
 
         stage('deploy-dev') { 
             steps {
-              sh "sed -i 's/#{BOATHOUSE_ORG_NAME}#/${BOATHOUSE_ORG_NAME}/g' docker-compose-template.yaml"
+              sh "sed -i 's/#{BOATHOUSE_ORG_NAME}#/${BOATHOUSE_ORG_NAME}/g' src/docker-compose-template.yaml"
               script {
                 server = getHost()
                 echo "copy docker-compose file to remote server...."       
-                sshPut remote: server, from: 'docker-compose-template.yaml', into: '.'
+                sshPut remote: server, from: 'src/docker-compose-template.yaml', into: '.'
                 sshCommand remote: server, command: "mkdir -p src/product-service/api/scripts"
                 sshPut remote: server, from: 'src/product-service/api/scripts/init.sql', into: './src/product-service/api/scripts/init.sql'
 
                 echo "stopping previous docker containers...."       
                 sshCommand remote: server, command: "docker login docker.pkg.github.com -u ${CREDS_GITHUB_REGISTRY_USR} -p ${CREDS_GITHUB_REGISTRY_PSW}"
-                sshCommand remote: server, command: "docker-compose -f docker-compose-template.yaml -p boathouse down"
+                sshCommand remote: server, command: "docker-compose -f src/docker-compose-template.yaml -p boathouse down"
                 
                 echo "pulling newest docker images..."
-                sshCommand remote: server, command: "docker-compose -f docker-compose-template.yaml -p boathouse pull"
+                sshCommand remote: server, command: "docker-compose -f src/docker-compose-template.yaml -p boathouse pull"
                 
                 echo "restarting new docker containers...."
-                sshCommand remote: server, command: "docker-compose -f docker-compose-template.yaml -p boathouse up -d"
+                sshCommand remote: server, command: "docker-compose -f src/docker-compose-template.yaml -p boathouse up -d"
                 echo "successfully started!"
               }
             }
@@ -158,12 +158,12 @@ pipeline {
             steps {
                 script {
                     // 本地执行测试
-                    sh "mkdir -p ./selenium/dotnet-uitest/uitest/report"
-                    sh "docker-compose -f ./selenium/dotnet-uitest/docker-compose-hub.yml -p uitest-hub down"
-                    sh "docker-compose -f ./selenium/dotnet-uitest/docker-compose-hub.yml -p uitest-hub pull"
-                    sh "docker-compose -f ./selenium/dotnet-uitest/docker-compose-hub.yml -p uitest-hub up -d"
+                    sh "mkdir -p ./test/selenium/dotnet-uitest/uitest/report"
+                    sh "docker-compose -f ./test/selenium/dotnet-uitest/docker-compose-hub.yml -p uitest-hub down"
+                    sh "docker-compose -f ./test/selenium/dotnet-uitest/docker-compose-hub.yml -p uitest-hub pull"
+                    sh "docker-compose -f ./test/selenium/dotnet-uitest/docker-compose-hub.yml -p uitest-hub up -d"
                     sh "docker run -v \$(pwd)/selenium/dotnet-uitest/uitest/report:/app/TestResults ${BOATHOUSE_CONTAINER_REGISTRY}/uitest:latest"
-                    mstest testResultsFile:"selenium/**/*.trx", keepLongStdio: true
+                    mstest testResultsFile:"test/selenium/**/*.trx", keepLongStdio: true
                   }
             }
         }
