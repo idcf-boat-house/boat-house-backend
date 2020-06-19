@@ -119,13 +119,13 @@ pipeline {
 
                 echo "stopping previous docker containers...."       
                 sshCommand remote: server, command: "docker login docker.pkg.github.com -u ${CREDS_GITHUB_REGISTRY_USR} -p ${CREDS_GITHUB_REGISTRY_PSW}"
-                sshCommand remote: server, command: "docker-compose -f src/docker-compose-template.yaml -p boathouse down"
+                sshCommand remote: server, command: "docker-compose -f docker-compose-template.yaml -p boathouse down"
                 
                 echo "pulling newest docker images..."
-                sshCommand remote: server, command: "docker-compose -f src/docker-compose-template.yaml -p boathouse pull"
+                sshCommand remote: server, command: "docker-compose -f docker-compose-template.yaml -p boathouse pull"
                 
                 echo "restarting new docker containers...."
-                sshCommand remote: server, command: "docker-compose -f src/docker-compose-template.yaml -p boathouse up -d"
+                sshCommand remote: server, command: "docker-compose -f docker-compose-template.yaml -p boathouse up -d"
                 echo "successfully started!"
               }
             }
