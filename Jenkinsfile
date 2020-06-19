@@ -155,6 +155,7 @@ pipeline {
             }
         }
 
+        // 运行UI测试
         stage('run-uitest'){
             steps {
                 script {
@@ -169,6 +170,7 @@ pipeline {
             }
         }
 
+        // 测试环境部署
         stage('deploy-test') {
             steps {
                 timeout(5) {
@@ -182,6 +184,7 @@ pipeline {
             }
         }
 
+        // 生产环境部署
         stage('deploy-production') { 
             steps {
                 timeout(5) {
