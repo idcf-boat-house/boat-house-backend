@@ -151,7 +151,7 @@ pipeline {
 
         stage('build-uitest'){
             steps {
-                sh "docker build -f selenium/dotnet-uitest/Dockerfile -t ${BOATHOUSE_CONTAINER_REGISTRY}/uitest:${env.BRANCH_NAME}-${env.BUILD_ID} -t ${BOATHOUSE_CONTAINER_REGISTRY}/uitest:latest selenium/dotnet-uitest"
+                sh "docker build -f test/selenium/dotnet-uitest/Dockerfile -t ${BOATHOUSE_CONTAINER_REGISTRY}/uitest:${env.BRANCH_NAME}-${env.BUILD_ID} -t ${BOATHOUSE_CONTAINER_REGISTRY}/uitest:latest selenium/dotnet-uitest"
             }
         }
 
