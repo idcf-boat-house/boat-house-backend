@@ -3,10 +3,10 @@
 
 # Boat House（船屋餐饮系统）—— 服务端
 
-![Build client](https://github.com/idcf-boat-house/boat-house/workflows/Build%20client/badge.svg)
-![Build statistics-service](https://github.com/idcf-boat-house/boat-house/workflows/Build%20statistics-service/badge.svg)
-![Build product-service](https://github.com/idcf-boat-house/boat-house/workflows/Build%20product-service/badge.svg)
-![Build management](https://github.com/idcf-boat-house/boat-house/workflows/Build%20management/badge.svg)
+![Build client](https://github.com/idcf-boat-house/boat-house-frontend/workflows/Build%20client/badge.svg)
+![Build statistics-service](https://github.com/idcf-boat-house/boat-house-frontend/workflows/Build%20statistics-service/badge.svg)
+![Build product-service](https://github.com/idcf-boat-house/boat-house-frontend/workflows/Build%20product-service/badge.svg)
+![Build management](https://github.com/idcf-boat-house/boat-house-frontend/workflows/Build%20management/badge.svg)
 
 + [1. 架构设计](#1.%20架构设计)
     + [1.1. Statistics service 统计服务](#1.1.%20Statistics service 统计服务)
