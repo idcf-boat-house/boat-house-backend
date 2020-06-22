@@ -134,7 +134,7 @@ pipeline {
         }
 
         // 运行UI测试
-        stage('run-uitest'){
+  /*      stage('run-uitest'){
             steps {
                 script {
                     // 本地执行测试
@@ -147,6 +147,7 @@ pipeline {
                   }
             }
         }
+        */
 
         // 测试环境部署
         stage('deploy-test') {
