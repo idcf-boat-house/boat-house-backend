@@ -1,11 +1,11 @@
 FROM maven:3.5.2-jdk-8-alpine AS MAVEN_BUILD
 MAINTAINER leansoftx
-COPY pom.xml /build1/
+COPY src/account-service/api/pom.xml /build1/
 COPY src/account-service/api/src /build2/src/
 WORKDIR /build1/
 RUN mvn package && mvn cobertura:cobertura
 
-COPY pom.xml /build2/
+COPY src/account-service/api/pom.xml /build2/
 COPY src/product-service/api/src /build1/src/
 WORKDIR /build2/
 RUN mvn package && mvn cobertura:cobertura
