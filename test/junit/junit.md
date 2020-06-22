@@ -252,7 +252,7 @@ mvn clean test
 /path/project/target/site/jacoco-it
 
 ## 比如找到下面的路径的html(这个是我本地)
-/home/idcf-house/boat-house/src/product-service/api/target/site/jacoco-it
+/home/idcf-house/boat-house-frontend/src/product-service/api/target/site/jacoco-it
 ```
 
 打开输出目录的index.html查看执行覆盖率报告结果:
