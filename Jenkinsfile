@@ -24,8 +24,8 @@ pipeline {
     }
 
     stages {
-      
-        // 
+
+        //  
         stage('before-build'){
           steps {
             sh "printenv"
