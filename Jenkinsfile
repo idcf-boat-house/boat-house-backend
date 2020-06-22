@@ -24,15 +24,7 @@ pipeline {
     }
 
     stages {
-         // clean workspace
-         /*
-         stage('delete files from workspace') {
-          steps {
-            sh 'ls -l'
-            sh 'sudo rm -rf ./*'
-          }
-        }*/
-
+      
         // 
         stage('before-build'){
           steps {
@@ -41,25 +33,9 @@ pipeline {
         }
 
         stage('build') {
-          parallel {
- /*           stage('build-client') {
-              steps {
-                sh "docker build -f client/web/Dockerfile -t ${BOATHOUSE_CONTAINER_REGISTRY}/client:${env.BRANCH_NAME}-${env.BUILD_ID} -t ${BOATHOUSE_CONTAINER_REGISTRY}/client:latest client/web"
-                sh "docker login docker.pkg.github.com -u ${CREDS_GITHUB_REGISTRY_USR} -p ${CREDS_GITHUB_REGISTRY_PSW}"
-                sh "docker push ${BOATHOUSE_CONTAINER_REGISTRY}/client:latest"
-                sh "docker push ${BOATHOUSE_CONTAINER_REGISTRY}/client:${env.BRANCH_NAME}-${env.BUILD_ID}"
-              }
-            }
 
-            stage('build-management') {
-              steps {
-                sh "docker build -f management/web/Dockerfile -t ${BOATHOUSE_CONTAINER_REGISTRY}/management:${env.BRANCH_NAME}-${env.BUILD_ID} -t ${BOATHOUSE_CONTAINER_REGISTRY}/management:latest management/web"
-                sh "docker login docker.pkg.github.com -u ${CREDS_GITHUB_REGISTRY_USR} -p ${CREDS_GITHUB_REGISTRY_PSW}"
-                sh "docker push ${BOATHOUSE_CONTAINER_REGISTRY}/management:latest"
-                sh "docker push ${BOATHOUSE_CONTAINER_REGISTRY}/management:${env.BRANCH_NAME}-${env.BUILD_ID}"
-              }
-            }
-*/
+          parallel {
+
             stage('build-statistics-service') {
               steps {
                 sh "docker build -f src/statistics-service/api/Dockerfile -t ${BOATHOUSE_CONTAINER_REGISTRY}/statistics_service_api:${env.BRANCH_NAME}-${env.BUILD_ID} -t ${BOATHOUSE_CONTAINER_REGISTRY}/statistics_service_api:latest src/statistics-service/api"
