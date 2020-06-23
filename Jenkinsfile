@@ -91,6 +91,7 @@ pipeline {
               script {
                 server = getHost()
                 echo "copy docker-compose file to remote server...."       
+                sshRemove remote: server, path: "./docker-compose-template.yaml"   // 先删除
                 sshPut remote: server, from: 'src/docker-compose-template.yaml', into: '.'
                 sshCommand remote: server, command: "mkdir -p src/product-service/api/scripts"
                 sshPut remote: server, from: 'src/product-service/api/scripts/init.sql', into: './src/product-service/api/scripts/init.sql'
@@ -137,7 +138,6 @@ pipeline {
                 sh "find devops/kompose/test -name *-deployment.yaml | xargs sed -i 's/#{env.BRANCH_NAME}#-#{env.BUILD_ID}#/${env.BRANCH_NAME}-${env.BUILD_ID}/g'"
                 kubernetesDeploy configs: 'devops/kompose/test/product-service-api-deployment.yaml,devops/kompose/test/statistics-service-api-deployment.yaml,devops/kompose/test/statistics-service-worker-deployment.yaml,devops/kompose/test/account-service-api-deployment.yaml', deleteResource: true, kubeConfig: [path: ''], kubeconfigId: 'creds-test-k8s', secretName: 'regcred', secretNamespace: 'boathouse-dev', ssh: [sshCredentialsId: '*', sshServer: ''], textCredentials: [certificateAuthorityData: '', clientCertificateData: '', clientKeyData: '', serverUrl: 'https://']
                 kubernetesDeploy configs: 'devops/kompose/test/*', deleteResource: false, kubeConfig: [path: ''], kubeconfigId: 'creds-test-k8s', secretName: 'regcred', secretNamespace: 'boathouse-dev', ssh: [sshCredentialsId: '*', sshServer: ''], textCredentials: [certificateAuthorityData: '', clientCertificateData: '', clientKeyData: '', serverUrl: 'https://']
-
             }
         }
 
