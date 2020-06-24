@@ -36,14 +36,14 @@ jobs:
          run: env && ls
 
        - name: replace project name
-         run: sed -i "s|docker.pkg.github.com\/idcf-boat-house\/boat-house|docker.pkg.github.com\/${GITHUB_REPOSITORY%/*}\/boat-house|g" kompose/test/product-service-*.yaml
+         run: sed -i "s|docker.pkg.github.com\/idcf-boat-house\/boat-house|docker.pkg.github.com\/${GITHUB_REPOSITORY%/*}\/boat-house|g" devops/kompose/test/product-service-*.yaml
 
        - name: replace docker images tags
-         run: sed -i "s|:latest$|:action-ci|g" kompose/test/product-service-*.yaml
+         run: sed -i "s|:latest$|:action-ci|g" devops/kompose/test/product-service-*.yaml
 
        - name: grep images url
-         run: grep -i "image:" kompose/test/product-service-*.yaml
-         #run: ls kompose/test/product-service-*.yaml
+         run: grep -i "image:" devops/kompose/kompose/test/product-service-*.yaml
+         #run: ls devops/kompose/test/product-service-*.yaml
 
        - uses: Azure/k8s-set-context@v1
          with:
@@ -60,8 +60,8 @@ jobs:
          with:
            namespace: 'boathouse-test-github'
            manifests: |
-              kompose/test/product-service-api-deployment.yaml
-              kompose/test/product-service-api-svc.yaml
-              kompose/test/product-service-db-deployment.yaml
-              kompose/test/product-service-db-svc.yaml
+              devops/kompose/test/product-service-api-deployment.yaml
+              devops/kompose/test/product-service-api-svc.yaml
+              devops/kompose/test/product-service-db-deployment.yaml
+              devops/kompose/test/product-service-db-svc.yaml
            kubectl-version: 'latest'
