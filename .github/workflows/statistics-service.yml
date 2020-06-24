@@ -45,14 +45,14 @@ jobs:
          run: env && ls
 
        - name: replace project name
-         run: sed -i "s|docker.pkg.github.com\/idcf-boat-house\/boat-house|docker.pkg.github.com\/${GITHUB_REPOSITORY%/*}\/boat-house|g" kompose/test/statistics-service-*.yaml
+         run: sed -i "s|docker.pkg.github.com\/idcf-boat-house\/boat-house|docker.pkg.github.com\/${GITHUB_REPOSITORY%/*}\/boat-house|g" devops/kompose/test/statistics-service-*.yaml
 
        - name: replace docker images tags
-         run: sed -i "s|:latest$|:action-ci|g" kompose/test/statistics-service-*.yaml
+         run: sed -i "s|:latest$|:action-ci|g" devops/kompose/test/statistics-service-*.yaml
 
        - name: grep images url
-         run: grep -i "image:" kompose/test/statistics-service-*.yaml
-         #run: ls kompose/test/statistics-service-*.yaml
+         run: grep -i "image:" devops/kompose/test/statistics-service-*.yaml
+         #run: ls devops/kompose/test/statistics-service-*.yaml
 
        - uses: Azure/k8s-set-context@v1
          with:
@@ -69,12 +69,12 @@ jobs:
          with:
            namespace: 'boathouse-test-github'
            manifests: |
-              kompose/test/statistics-service-api-deployment.yaml
-              kompose/test/statistics-service-api-svc.yaml
-              kompose/test/statistics-service-db-deployment.yaml
-              kompose/test/statistics-service-db-svc.yaml
-              kompose/test/statistics-service-redis-deployment.yaml
-              kompose/test/statistics-service-redis-svc.yaml
-              kompose/test/statistics-service-worker-deployment.yaml
-              kompose/test/statistics-service-worker-svc.yaml
+              devops/kompose/test/statistics-service-api-deployment.yaml
+              devops/kompose/test/statistics-service-api-svc.yaml
+              devops/kompose/test/statistics-service-db-deployment.yaml
+              devops/kompose/test/statistics-service-db-svc.yaml
+              devops/kompose/test/statistics-service-redis-deployment.yaml
+              devops/kompose/test/statistics-service-redis-svc.yaml
+              devops/kompose/test/statistics-service-worker-deployment.yaml
+              devops/kompose/test/statistics-service-worker-svc.yaml
            kubectl-version: 'latest'
