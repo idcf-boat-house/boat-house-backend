@@ -16,7 +16,8 @@
     + 1.5. 支付服务（暂未实现，期待你的参与）
 + [2. 本地环境配置](#2.%20本地环境配置)
 + [3. 本地开发调试](#3.%本地开发调试)
-+ [4. DevOps](#3.%DevOps)
++ [4. DevOps](#4.%DevOps)
++ [5. 目录结构](#5.%目录结构)
 + 常见问题
 
  
@@ -83,6 +84,8 @@ docker-compose up -d
 本项目将支持ChatOps && AIOps，让开发、测试、客户可以在IM即时通讯工具里以聊天的方式完成相应的工作。
 
 ![markdown](/images/boathouse-structure-chatops.png "markdown")
+
+## 5. 目录结构
 
 
 ### DevOps工具链环境 示例
