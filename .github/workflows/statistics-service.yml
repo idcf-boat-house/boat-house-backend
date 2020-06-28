@@ -1,5 +1,8 @@
 name: Build and Deploy dev statistics-service
-on: push
+on: 
+  push:
+    paths:
+      - 'src/statistics-service/**'
 
 jobs:
   build:
