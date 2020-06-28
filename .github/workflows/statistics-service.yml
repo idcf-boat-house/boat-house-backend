@@ -24,7 +24,7 @@ jobs:
         run: docker images
 
       - name: docker login
-        run : docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY%/*} -p ${{ secrets.packages_token }}
+        run : docker login docker.pkg.github.com -u idcf-boat-house/boat-house-frontend -p ${{ secrets.packages_token }}
 
       - name: docker push statistics_service_api tag branch number
         run : docker push docker.pkg.github.com/idcf-boat-house/boat-house-frontend/statistics_service_api:action-${GITHUB_REF##*/}-ci-${GITHUB_RUN_NUMBER}
