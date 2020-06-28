@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - 'src/statistics-service/**'
+      - '.github/workflows/statistics-service.yml'
 
 jobs:
   build:
