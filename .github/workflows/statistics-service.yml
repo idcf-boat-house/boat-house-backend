@@ -82,3 +82,4 @@ jobs:
               devops/kompose/test/statistics-service-worker-deployment.yaml
               devops/kompose/test/statistics-service-worker-svc.yaml
            kubectl-version: 'latest'
+
