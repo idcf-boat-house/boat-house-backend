@@ -9,16 +9,16 @@
 ![Build management](https://github.com/idcf-boat-house/boat-house-frontend/workflows/Build%20management/badge.svg)
 
 + [1. 架构设计](#1.%20架构设计)
-    + [1.1. Statistics service 统计服务](#1.1.%20Statistics service 统计服务)
-    + [1.2. Product service 产品服务](#1.2.%20Product service 产品服务)
-    + [1.3. Account service 账户服务](#1.3.%20Account service 账户服务)
+    + [1.1. Statistics service 统计服务](#1.1.%20Statistics%20service%20统计服务)
+    + [1.2. Product service 产品服务](#1.2.%20Product%20service%20产品服务)
+    + [1.3. Account service 账户服务](#1.3.%20Account%20service%20账户服务)
     + 1.4. 订单服务（暂未实现，期待你的参与）
     + 1.5. 支付服务（暂未实现，期待你的参与）
-+ 目录结构
-+ 本地环境配置
-+ 本地开发调试
-+ DevOps
-+ 常见问题 
++ [2. 本地环境配置](#2.%20本地环境配置)
++ [3. 本地开发调试](#3.%本地开发调试)
++ [4. DevOps](#4.%DevOps)
++ [5. 目录结构](#5.%目录结构)
++ 常见问题
 
  
 ## 1. 架构设计
@@ -31,6 +31,7 @@
 | account-service  | 业务条线 - 账户服务  |spring boot + mysql |
 | order-service  | 业务条线 - 订单服务  |spring boot + mysql |
 | payment-service  | 业务条线 - 支付服务  |spring boot + mysql |
+| statistics-service  | 业务条线 - 统计服务  |.net core + redis + mysql |
 
 ### 1.1. Statistics service 统计服务
 
@@ -51,28 +52,16 @@
 TODO
 
 ## 2. 本地环境配置
-参考：https://code.visualstudio.com/docs/java/java-spring-boot
 
-先决条件
++ JDK
+
 Java Development Kit (JDK), version 1.8. https://www.oracle.com/java/technologies/javase-jdk14-downloads.html
-Apache Maven, version 3.0 or later. 
-Java Extension Pack
 
++ IntelliJ IDEA
 
-### IntelliJ IDEA
 https://www.jetbrains.com/idea/download/
-选择社区免费版 下载
-  
- 
 
-
-
-
-java
-
-spring boot
-
-mysql
+> VS Code 参考：https://code.visualstudio.com/docs/java/java-spring-boot
 
 ## 3. 本地开发调试
 
@@ -95,6 +84,8 @@ docker-compose up -d
 本项目将支持ChatOps && AIOps，让开发、测试、客户可以在IM即时通讯工具里以聊天的方式完成相应的工作。
 
 ![markdown](/images/boathouse-structure-chatops.png "markdown")
+
+## 5. 目录结构
 
 
 ### DevOps工具链环境 示例
