@@ -111,7 +111,7 @@ pipeline {
             }
         } 
 
-      
+      /*
         stage('Jmeter') {
           steps {
             script{
@@ -126,7 +126,7 @@ pipeline {
                 publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: './test/jmeter/output', reportFiles: 'index.html', reportName: 'Jmeter Report', reportTitles: ''])
             }
           }
-        }
+        }*/
 
         // 测试环境部署
         stage('deploy-test') {
