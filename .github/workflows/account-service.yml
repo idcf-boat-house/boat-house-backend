@@ -48,7 +48,7 @@ jobs:
        - name: replace BUILD ID
          run: sed -i "s|#{env.BUILD_ID}#|${GITHUB_RUN_NUMBER}|g" devops/kompose/test/account-service-*.yaml
 
-      #  - name: replace docker images tags
+      #  - name: replace docker images tags 
       #    run: sed -i "s|:latest$|:action-ci|g" devops/kompose/test/account-service-*.yaml 
 
        - name: replace k8s namespace
