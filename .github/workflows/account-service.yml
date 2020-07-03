@@ -1,0 +1,78 @@
+name: Build and Deploy dev account-service
+on: 
+  push:
+    paths:
+      - 'src/account-service/**'
+      - '.github/workflows/account-service.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - name: list env
+        run: env
+
+      - name: docker build account-service
+        run: docker build -f src/account-service/api/Dockerfile -t docker.pkg.github.com/idcf-boat-house/boat-house-frontend/account_service_api:action-${GITHUB_REF##*/}-ci-${GITHUB_RUN_NUMBER} -t docker.pkg.github.com/idcf-boat-house/boat-house-frontend/account_service_api:action-ci src/account-service/api 
+
+      - name: docker images 
+        run: docker images
+
+      - name: docker login
+        run : docker login docker.pkg.github.com -u idcf-boat-house/boat-house-frontend -p ${{ secrets.packages_token }}
+
+      - name: docker push account_service_api tag branch number
+        run : docker push docker.pkg.github.com/idcf-boat-house/boat-house-frontend/account_service_api:action-${GITHUB_REF##*/}-ci-${GITHUB_RUN_NUMBER}
+      
+      - name: docker push account_service_api tag latest
+        run: docker push docker.pkg.github.com/idcf-boat-house/boat-house-frontend/account_service_api:action-ci
+
+  deploy-k8s-test-github:
+     needs: build
+     runs-on: ubuntu-latest
+     steps:
+       - uses: actions/checkout@v2
+
+       - name: list env
+         run: env && ls
+       
+       - name: replace github org name
+         run: sed -i "s|#{BOATHOUSE_ORG_NAME}#|${GITHUB_REPOSITORY_OWNER}|g" devops/kompose/test/account-service-*.yaml
+
+       - name: replace rep branch name
+         run: sed -i "s|#{env.BRANCH_NAME}#|action-${GITHUB_REF##*/}-ci|g" devops/kompose/test/account-service-*.yaml
+
+       - name: replace BUILD ID
+         run: sed -i "s|#{env.BUILD_ID}#|${GITHUB_RUN_NUMBER}|g" devops/kompose/test/account-service-*.yaml
+
+      #  - name: replace docker images tags
+      #    run: sed -i "s|:latest$|:action-ci|g" devops/kompose/test/account-service-*.yaml 
+
+       - name: replace k8s namespace
+         run: sed -i "s|#{DEPLOY_K8S_NAMESPACE_TEST}#|${{ secrets.DEPLOY_K8S_NAMESPACE_TEST }}|g" devops/kompose/test/account-service-*.yaml
+
+       - name: grep images url
+         run: grep -i "image:" devops/kompose/test/account-service-*.yaml
+         #run: ls devops/kompose/test/account-service-*.yaml
+
+       - uses: Azure/k8s-set-context@v1
+         with:
+           kubeconfig: ${{ secrets.KUBE_CONFIG }}
+
+       - uses: Azure/k8s-create-secret@v1
+         with:
+           container-registry-url: docker.pkg.github.com
+           container-registry-username: idcf-boat-house/boat-house-frontend
+           container-registry-password: ${{ secrets.packages_token }}
+           secret-name: demo-k8s-secret
+
+       - uses: Azure/k8s-deploy@v1
+         with:
+           namespace: 'boathouse-test-github'
+           manifests: |
+              devops/kompose/test/account-service-api-deployment.yaml
+              devops/kompose/test/account-service-api-svc.yaml
+           kubectl-version: 'latest'

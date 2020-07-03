@@ -30,7 +30,7 @@ jobs:
       - name: docker push product_service_api tag latest
         run: docker push docker.pkg.github.com/idcf-boat-house/boat-house-frontend/product_service_api:action-ci
 
-  deploy-dev:
+  deploy-k8s-test-github:
      needs: build
      runs-on: ubuntu-latest
      steps:
