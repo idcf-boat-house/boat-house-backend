@@ -38,14 +38,14 @@ jobs:
 
        - name: list env
          run: env && ls
-        # docker.pkg.github.com/#{BOATHOUSE_ORG_NAME}#/boat-house-frontend/product_service_api:#{env.BRANCH_NAME}#-#{env.BUILD_ID}#
-        - name: replace github org name
+       
+       - name: replace github org name
          run: sed -i "s|#{BOATHOUSE_ORG_NAME}#|${GITHUB_REPOSITORY_OWNER}|g" devops/kompose/test/product-service-*.yaml
 
-        - name: replace rep branch name
+       - name: replace rep branch name
          run: sed -i "s|#{env.BRANCH_NAME}#|action-${GITHUB_REF##*/}-ci|g" devops/kompose/test/product-service-*.yaml
 
-        - name: replace BUILD ID
+       - name: replace BUILD ID
          run: sed -i "s|#{env.BUILD_ID}#|${GITHUB_RUN_NUMBER}|g" devops/kompose/test/product-service-*.yaml
 
       #  - name: replace docker images tags
