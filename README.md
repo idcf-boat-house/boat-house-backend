@@ -65,11 +65,17 @@ https://www.jetbrains.com/idea/download/
 
 ## 3. 本地开发调试
 
+- 以容器方式
+
 本项目采用容器的方式进行编译、打包、以及运行，客户端安装Docker以及Docker-compose工具后可以一键运行此应用。
 
 `
-docker-compose up -d
+docker-compose -f src/docker-compose.yml up -d
 `
+
+- 在本机多应用联调
+
+参考这个文档：[IDCF Boat House 快速开发指南](https://github.com/idcf-boat-house/boat-house/blob/master/docs/quick-start/operation/dev-guide.md)
 
 ## 4. DevOps
 
