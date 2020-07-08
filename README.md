@@ -92,7 +92,26 @@ docker-compose -f src/docker-compose.yml up -d
 ![markdown](/images/boathouse-structure-chatops.png "markdown")
 
 ## 5. 目录结构
-TODO
-
-
+``` tree
+├── README.md
+├── devops
+│   ├── jenkins
+│   ├── k8s-monitor
+│   └── kompose
+├── images
+├── src
+│   ├── Dockerfile
+│   ├── account-service
+│   ├── docker-compose-template.yaml
+│   ├── docker-compose.yml
+│   ├── order-service
+│   ├── pay-service
+│   ├── product-service
+│   └── statistics-service
+└── test
+    ├── jmeter
+    ├── junit
+    ├── selenium
+    └── unit-test
+```
 
