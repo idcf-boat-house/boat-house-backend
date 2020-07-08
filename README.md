@@ -92,15 +92,7 @@ docker-compose -f src/docker-compose.yml up -d
 ![markdown](/images/boathouse-structure-chatops.png "markdown")
 
 ## 5. 目录结构
+TODO
 
-
-### DevOps工具链环境 示例
-
-| 地址  | 说明  | 
-| ------------ | ------------ | 
-| http://jenkins.devopshub.cn  | Jenkins管理端  |
-| http://tools.devopshub.cn:8081 | Nexus  | 
-| http://tools.devopshub.cn:9000| Sonarqube|
-| http://tools.devopshub.cn  | Jira  |
 
 
