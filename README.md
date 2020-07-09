@@ -49,7 +49,7 @@
 
 ### 1.3. Account service 账户服务
 
-TODO
+提供系统用户登录、用户管理的接口
 
 ## 2. 本地环境配置
 
@@ -92,15 +92,26 @@ docker-compose -f src/docker-compose.yml up -d
 ![markdown](/images/boathouse-structure-chatops.png "markdown")
 
 ## 5. 目录结构
-
-
-### DevOps工具链环境 示例
-
-| 地址  | 说明  | 
-| ------------ | ------------ | 
-| http://jenkins.devopshub.cn  | Jenkins管理端  |
-| http://tools.devopshub.cn:8081 | Nexus  | 
-| http://tools.devopshub.cn:9000| Sonarqube|
-| http://tools.devopshub.cn  | Jira  |
-
+``` tree
+├── README.md
+├── devops
+│   ├── jenkins                                 Jenkins File
+│   ├── k8s-monitor 
+│   └── kompose                                 测试、生产环境Docker Compose文件
+├── images                                      当前文档库markdown文档引用图片统一存放的文件夹
+├── src                                         资源文件
+│   ├── Dockerfile                              
+│   ├── account-service                         账号服务
+│   ├── order-service                           订单服务
+│   ├── pay-service                             支付服务
+│   ├── product-service                         产品服务
+│   ├── statistics-service                      统计服务
+│   ├── docker-compose-template.yaml            Dev环境Docker Compose文件
+│   └── docker-compose.yml                      本地测试使用的Docker Compose文件
+└── test                                        测试相关
+    ├── jmeter  
+    ├── junit
+    ├── selenium
+    └── unit-test
+```
 
