@@ -12,8 +12,8 @@
     + [1.1. Statistics service 统计服务](#1.1.%20Statistics%20service%20统计服务)
     + [1.2. Product service 产品服务](#1.2.%20Product%20service%20产品服务)
     + [1.3. Account service 账户服务](#1.3.%20Account%20service%20账户服务)
-    + 1.4. 订单服务（暂未实现，期待你的参与）
-    + 1.5. 支付服务（暂未实现，期待你的参与）
+    + 1.4. 订单服务（暂未实现，期待您的参与）
+    + 1.5. 支付服务（暂未实现，期待您的参与）
 + [2. 本地环境配置](#2.%20本地环境配置)
 + [3. 本地开发调试](#3.%本地开发调试)
 + [4. DevOps](#4.%DevOps)
@@ -45,12 +45,14 @@
 进行菜品管理、菜品分类管理
 
 ![markdown](./images/boathouse-structure-product02.png "markdown")
+Web API 预览：http://dev-product-api.boat-house.cn/api/v1.0/swagger-ui.html
 
 
 ### 1.3. Account service 账户服务
 
 提供系统用户登录、用户管理的接口
-TODO：放DEV环境的swagger链接
+
+Web API 预览：http://dev-account-api.boat-house.cn/api/v1.0/swagger-ui.html
 
 ## 2. 本地环境配置
 
@@ -86,11 +88,16 @@ docker-compose -f src/docker-compose.yml up -d
 
 ![markdown](/images/boathouse-structure-tools.png "markdown")
 
++ [Jenkins](/devops/jenkins/jenkinsfile)
++ [GitHub Action](/.github/workflows)
+
+
 ### ChatOps && AIOps
 
 本项目将支持ChatOps && AIOps，让开发、测试、客户可以在IM即时通讯工具里以聊天的方式完成相应的工作。
 
 ![markdown](/images/boathouse-structure-chatops.png "markdown")
+[参考]()
 
 ## 5. 目录结构
 ``` tree
