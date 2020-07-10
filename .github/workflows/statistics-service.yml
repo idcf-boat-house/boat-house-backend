@@ -65,7 +65,7 @@ jobs:
 
        - name: grep images url
          run: grep -i "image:" devops/kompose/test/statistics-service-*.yaml
-         #run: ls devops/kompose/test/statistics-service-*.yaml 
+         #run: ls devops/kompose/test/statistics-service-*.yaml  
 
        - uses: Azure/k8s-set-context@v1
          with:
