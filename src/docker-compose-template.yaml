@@ -4,8 +4,8 @@ services:
     statistics-service-api:
         image: #{BOATHOUSE_CONTAINER_REGISTRY}#/#{BOATHOUSE_ORG_NAME}#/boat-house-backend/statistics_service_api:latest
         restart: always
-        ports:
-            - 6001:80
+        # ports:
+        #    - 6001:80  # 无需暴露端口到外网
         networks:
             - frontend
             - backend
