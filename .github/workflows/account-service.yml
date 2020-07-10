@@ -1,4 +1,4 @@
-name: Build and Deploy dev account-service
+name: Build and Deploy account-service
 on: 
   push:
     paths:
@@ -16,19 +16,19 @@ jobs:
         run: env
 
       - name: docker build account-service
-        run: docker build -f src/account-service/api/Dockerfile -t docker.pkg.github.com/idcf-boat-house/boat-house-frontend/account_service_api:action-${GITHUB_REF##*/}-ci-${GITHUB_RUN_NUMBER} -t docker.pkg.github.com/idcf-boat-house/boat-house-frontend/account_service_api:action-ci src/account-service/api 
+        run: docker build -f src/account-service/api/Dockerfile -t ${{ secrets.BOATHOUSE_CONTAINER_REGISTRY }}/${GITHUB_REPOSITORY}/account_service_api:action-${GITHUB_REF##*/}-ci-${GITHUB_RUN_NUMBER} -t ${{ secrets.BOATHOUSE_CONTAINER_REGISTRY }}/${GITHUB_REPOSITORY}/account_service_api:action-ci src/account-service/api 
 
       - name: docker images 
         run: docker images
 
       - name: docker login
-        run : docker login docker.pkg.github.com -u idcf-boat-house/boat-house-frontend -p ${{ secrets.packages_token }}
+        run : docker login ${{ secrets.BOATHOUSE_CONTAINER_REGISTRY }} -u ${{ secrets.CREDS_GITHUB_REGISTRY_USR }} -p ${{ secrets.packages_token }}
 
       - name: docker push account_service_api tag branch number
-        run : docker push docker.pkg.github.com/idcf-boat-house/boat-house-frontend/account_service_api:action-${GITHUB_REF##*/}-ci-${GITHUB_RUN_NUMBER}
+        run : docker push ${{ secrets.BOATHOUSE_CONTAINER_REGISTRY }}/${GITHUB_REPOSITORY}/account_service_api:action-${GITHUB_REF##*/}-ci-${GITHUB_RUN_NUMBER}
       
       - name: docker push account_service_api tag latest
-        run: docker push docker.pkg.github.com/idcf-boat-house/boat-house-frontend/account_service_api:action-ci
+        run: docker push ${{ secrets.BOATHOUSE_CONTAINER_REGISTRY }}/${GITHUB_REPOSITORY}/account_service_api:action-ci
 
   deploy-k8s-test-github:
      needs: build
@@ -39,6 +39,9 @@ jobs:
        - name: list env
          run: env && ls
        
+       - name: replace docker reg url（acr）
+         run: sed -i "s|#{BOATHOUSE_CONTAINER_REGISTRY}#|${BOATHOUSE_CONTAINER_REGISTRY}|g" devops/kompose/test/account-service-*.yaml
+
        - name: replace github org name
          run: sed -i "s|#{BOATHOUSE_ORG_NAME}#|${GITHUB_REPOSITORY_OWNER}|g" devops/kompose/test/account-service-*.yaml
 
@@ -47,9 +50,6 @@ jobs:
 
        - name: replace BUILD ID
          run: sed -i "s|#{env.BUILD_ID}#|${GITHUB_RUN_NUMBER}|g" devops/kompose/test/account-service-*.yaml
-
-      #  - name: replace docker images tags 
-      #    run: sed -i "s|:latest$|:action-ci|g" devops/kompose/test/account-service-*.yaml 
 
        - name: replace k8s namespace
          run: sed -i "s|#{DEPLOY_K8S_NAMESPACE_TEST}#|${{ secrets.DEPLOY_K8S_NAMESPACE_TEST }}|g" devops/kompose/test/account-service-*.yaml
@@ -64,8 +64,8 @@ jobs:
 
        - uses: Azure/k8s-create-secret@v1
          with:
-           container-registry-url: docker.pkg.github.com
-           container-registry-username: idcf-boat-house/boat-house-frontend
+           container-registry-url: ${{ secrets.BOATHOUSE_CONTAINER_REGISTRY }}
+           container-registry-username:  ${{ secrets.CREDS_GITHUB_REGISTRY_USR }}
            container-registry-password: ${{ secrets.packages_token }}
            secret-name: demo-k8s-secret
 

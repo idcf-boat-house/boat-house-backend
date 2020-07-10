@@ -16,28 +16,28 @@ jobs:
         run: env
 
       - name: docker build src/statistics-service/api
-        run: docker build -f src/statistics-service/api/Dockerfile -t docker.pkg.github.com/idcf-boat-house/boat-house-frontend/statistics_service_api:action-${GITHUB_REF##*/}-ci-${GITHUB_RUN_NUMBER} -t docker.pkg.github.com/idcf-boat-house/boat-house-frontend/statistics_service_api:action-ci src/statistics-service/api 
+        run: docker build -f src/statistics-service/api/Dockerfile -t ${{ secrets.BOATHOUSE_CONTAINER_REGISTRY }}/${GITHUB_REPOSITORY}/statistics_service_api:action-${GITHUB_REF##*/}-ci-${GITHUB_RUN_NUMBER} -t ${{ secrets.BOATHOUSE_CONTAINER_REGISTRY }}/${GITHUB_REPOSITORY}/statistics_service_api:action-ci src/statistics-service/api 
  
       - name: docker build src/statistics-service/worker
-        run: docker build -f src/statistics-service/worker/Dockerfile -t docker.pkg.github.com/idcf-boat-house/boat-house-frontend/statistics_service_worker:action-${GITHUB_REF##*/}-ci-${GITHUB_RUN_NUMBER} -t docker.pkg.github.com/idcf-boat-house/boat-house-frontend/statistics_service_worker:action-ci src/statistics-service/worker
+        run: docker build -f src/statistics-service/worker/Dockerfile -t ${{ secrets.BOATHOUSE_CONTAINER_REGISTRY }}/${GITHUB_REPOSITORY}/statistics_service_worker:action-${GITHUB_REF##*/}-ci-${GITHUB_RUN_NUMBER} -t ${{ secrets.BOATHOUSE_CONTAINER_REGISTRY }}/${GITHUB_REPOSITORY}/statistics_service_worker:action-ci src/statistics-service/worker
 
       - name: docker images 
         run: docker images
 
       - name: docker login
-        run : docker login docker.pkg.github.com -u idcf-boat-house/boat-house-frontend -p ${{ secrets.packages_token }}
+        run : docker login ${{ secrets.BOATHOUSE_CONTAINER_REGISTRY }} -u ${{ secrets.CREDS_GITHUB_REGISTRY_USR }} -p ${{ secrets.packages_token }}
 
       - name: docker push statistics_service_api tag branch number
-        run : docker push docker.pkg.github.com/idcf-boat-house/boat-house-frontend/statistics_service_api:action-${GITHUB_REF##*/}-ci-${GITHUB_RUN_NUMBER}
+        run : docker push ${{ secrets.BOATHOUSE_CONTAINER_REGISTRY }}/${GITHUB_REPOSITORY}/statistics_service_api:action-${GITHUB_REF##*/}-ci-${GITHUB_RUN_NUMBER}
       
       - name: docker push statistics_service_api tag latest
-        run: docker push docker.pkg.github.com/idcf-boat-house/boat-house-frontend/statistics_service_api:action-ci
+        run: docker push ${{ secrets.BOATHOUSE_CONTAINER_REGISTRY }}/${GITHUB_REPOSITORY}/statistics_service_api:action-ci
 
       - name: docker push statistics_service_worker tag branch number
-        run : docker push docker.pkg.github.com/idcf-boat-house/boat-house-frontend/statistics_service_worker:action-${GITHUB_REF##*/}-ci-${GITHUB_RUN_NUMBER}
+        run : docker push ${{ secrets.BOATHOUSE_CONTAINER_REGISTRY }}/${GITHUB_REPOSITORY}/statistics_service_worker:action-${GITHUB_REF##*/}-ci-${GITHUB_RUN_NUMBER}
       
       - name: docker push statistics_service_worker tag latest
-        run: docker push docker.pkg.github.com/idcf-boat-house/boat-house-frontend/statistics_service_worker:action-ci
+        run: docker push ${{ secrets.BOATHOUSE_CONTAINER_REGISTRY }}/${GITHUB_REPOSITORY}/statistics_service_worker:action-ci
 
   deploy-k8s-test-github:
      needs: build
@@ -47,6 +47,9 @@ jobs:
 
        - name: list env
          run: env && ls
+
+       - name: replace docker reg url（acr）
+         run: sed -i "s|#{BOATHOUSE_CONTAINER_REGISTRY}#|${BOATHOUSE_CONTAINER_REGISTRY}|g" devops/kompose/test/statistics-service-*.yaml
 
        - name: replace github org name
          run: sed -i "s|#{BOATHOUSE_ORG_NAME}#|${GITHUB_REPOSITORY_OWNER}|g" devops/kompose/test/statistics-service-*.yaml
@@ -70,8 +73,8 @@ jobs:
 
        - uses: Azure/k8s-create-secret@v1
          with:
-           container-registry-url: docker.pkg.github.com
-           container-registry-username: idcf-boat-house/boat-house-frontend
+           container-registry-url:  ${{ secrets.BOATHOUSE_CONTAINER_REGISTRY }}
+           container-registry-username: ${{ secrets.CREDS_GITHUB_REGISTRY_USR }}
            container-registry-password: ${{ secrets.packages_token }}
            secret-name: demo-k8s-secret
 
