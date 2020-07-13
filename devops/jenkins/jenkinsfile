@@ -34,20 +34,17 @@ pipeline {
         stage('before-build'){
           steps {
             sh "printenv"
+
+            echo "docker-compose restart"
+            sh 'mvn clean cobertura:cobertura'
           }
         }
-
 
 
         // 构建
         stage('build') {
 
           parallel {
-            stage('Code Coverage') {
-                steps {
-                    sh 'mvn clean cobertura:cobertura'
-                }
-            }
 
             // 统计服务打包
             stage('build-statistics-service') {
@@ -197,8 +194,9 @@ pipeline {
 
     post {
       always {
-        sh "sudo rm -rf src/product-service/api/target"
-        sh "sudo rm -rf src/account-service/api/target"
+        sh "sudo git clean -fdx"
+        //sh "sudo rm -rf src/product-service/api/target"
+        //sh "sudo rm -rf src/account-service/api/target"
       }
     }
   }
