@@ -35,8 +35,8 @@ pipeline {
           steps {
             sh "printenv"
 
-            //echo "docker-compose restart"
-            //sh 'mvn clean cobertura:cobertura'
+            echo "docker-compose restart"
+            sh 'mvn clean cobertura:cobertura'
           }
         }
 
