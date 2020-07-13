@@ -35,8 +35,7 @@ pipeline {
           steps {
             sh "printenv"
 
-            echo "docker-compose restart"
-            sh 'mvn clean cobertura:cobertura'
+            
           }
         }
 
@@ -49,6 +48,8 @@ pipeline {
             // 统计服务打包
             stage('build-statistics-service') {
               steps {
+                sh 'mvn clean cobertura:cobertura'
+
                 echo "docker build"
                 sh "docker build -f src/statistics-service/api/Dockerfile -t ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/statistics_service_api:${env.BRANCH_NAME}-${env.BUILD_ID} -t ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/statistics_service_api:latest src/statistics-service/api"
                 sh "docker build -f src/statistics-service/worker/Dockerfile -t ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/statistics_service_worker:${env.BRANCH_NAME}-${env.BUILD_ID} -t ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/statistics_service_worker:latest src/statistics-service/worker"
@@ -69,6 +70,8 @@ pipeline {
             // 产品服务打包
             stage('build-product-service') {
               steps {
+                sh 'mvn clean cobertura:cobertura'
+
                 echo "docker-compose restart"
                 sh "docker-compose -f src/product-service/api/docker-compose.build.yaml stop"
                 sh "docker-compose -f src/product-service/api/docker-compose.build.yaml up"
