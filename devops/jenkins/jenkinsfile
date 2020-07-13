@@ -37,10 +37,17 @@ pipeline {
           }
         }
 
+
+
         // 构建
         stage('build') {
 
           parallel {
+            stage('Code Coverage') {
+                steps {
+                    sh 'mvn clean cobertura:cobertura'
+                }
+            }
 
             // 统计服务打包
             stage('build-statistics-service') {
@@ -62,15 +69,25 @@ pipeline {
             // 产品服务打包
             stage('build-product-service') {
               steps {
+                echo "docker-compose restart"
                 sh "docker-compose -f src/product-service/api/docker-compose.build.yaml stop"
                 sh "docker-compose -f src/product-service/api/docker-compose.build.yaml up"
+
+                // junit
+                echo "junit"
                 junit 'src/product-service/api/target/surefire-reports/**/TEST-*.xml'
+
+                // Requires Cobertura plugin to archive and display converage report
+                // https://plugins.jenkins.io/cobertura/
+                echo "Archive coverage report"                
                 cobertura autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: 'src/product-service/api/target/site/cobertura/coverage.xml', conditionalCoverageTargets: '70, 0, 0', failUnhealthy: false, failUnstable: false, lineCoverageTargets: '80, 0, 0', maxNumberOfBuilds: 0, methodCoverageTargets: '80, 0, 0', onlyStable: false, sourceEncoding: 'ASCII', zoomCoverageChart: false
+                                
+                echo "docker build"
                 sh "docker build -f src/product-service/api/Dockerfile.image -t ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/product_service_api:${env.BRANCH_NAME}-${env.BUILD_ID} -t ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/product_service_api:latest src/product-service/api"
 
                 // push
-                sh "docker login ${BOATHOUSE_CONTAINER_REGISTRY} -u ${CREDS_GITHUB_REGISTRY_USR} -p ${CREDS_GITHUB_REGISTRY_PSW}"
                 echo "push service api..."
+                sh "docker login ${BOATHOUSE_CONTAINER_REGISTRY} -u ${CREDS_GITHUB_REGISTRY_USR} -p ${CREDS_GITHUB_REGISTRY_PSW}"
                 sh "docker push ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/product_service_api:latest"
                 sh "docker push ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/product_service_api:${env.BRANCH_NAME}-${env.BUILD_ID}"
 
