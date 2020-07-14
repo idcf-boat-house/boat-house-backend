@@ -1,5 +1,5 @@
 // -------------------------------------
-// 后端 webapi jenkinsfile
+// baot house backend jenkinsfile
 // -------------------------------------
 
 def getHost() {
@@ -30,13 +30,12 @@ pipeline {
 
     stages {
 
-        //  
+        // 
         stage('before-build'){
           steps {
             sh "printenv"
           }
         }
-
 
         // 构建
         stage('build') {
@@ -94,7 +93,8 @@ pipeline {
                 sh "docker push ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/product_service_api:latest"
                 sh "docker push ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/product_service_api:${env.BRANCH_NAME}-${env.BUILD_ID}"
 
-                // 
+                // publish Junit Report
+                echo "Publish Junit Report..."
                 publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: './src/product-service/api/target/site/jacoco-it', reportFiles: 'index.html', reportName: 'Junit Report', reportTitles: ''])
               }
             }
@@ -102,23 +102,24 @@ pipeline {
             // 用户信息服务器打包
             stage('build-account-service') {
               steps {
-                echo "docker-compose restart"
+                echo "docker-compose restart..."
                 sh "docker-compose -f src/account-service/api/docker-compose.build.yaml stop"
                 sh "docker-compose -f src/account-service/api/docker-compose.build.yaml up"
 
                 // junit
-                echo "junit...."
+                echo "junit..."
                 junit 'src/account-service/api/target/surefire-reports/**/TEST-*.xml'
-               
+                publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: './src/account-service/api/target/site/jacoco-it', reportFiles: 'index.html', reportName: 'Junit Report', reportTitles: ''])
+
                 // Requires Cobertura plugin to archive and display converage report
                 // https://plugins.jenkins.io/cobertura/
-                echo "Archive coverage report"  
+                echo "Archive coverage report..."  
                 cobertura autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: 'src/account-service/api/target/site/cobertura/coverage.xml', conditionalCoverageTargets: '70, 0, 0', failUnhealthy: false, failUnstable: false, lineCoverageTargets: '80, 0, 0', maxNumberOfBuilds: 0, methodCoverageTargets: '80, 0, 0', onlyStable: false, sourceEncoding: 'ASCII', zoomCoverageChart: false
               
-                echo "docker build...."
+                echo "docker build..."
                 sh "docker build -f src/account-service/api/Dockerfile.image -t ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/account_service_api:${env.BRANCH_NAME}-${env.BUILD_ID} -t ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/account_service_api:latest src/account-service/api"
                 
-                echo "docker login...."
+                echo "docker login..."
                 sh "docker login ${BOATHOUSE_CONTAINER_REGISTRY} -u ${CREDS_GITHUB_REGISTRY_USR} -p ${CREDS_GITHUB_REGISTRY_PSW}"
 
                 // push
@@ -137,28 +138,28 @@ pipeline {
               sh "sed -i 's/#{BOATHOUSE_ORG_NAME}#/${BOATHOUSE_ORG_NAME}/g' src/docker-compose-template.yaml"
               script {
                 server = getHost()
-                echo "copy docker-compose file to remote server...."       
-                sshRemove remote: server, path: "./docker-compose-template.yaml"   // 先删除
+                echo "copy docker-compose file to remote server..."       
+                sshRemove remote: server, path: "./docker-compose-template.yaml"   // 先删除远程服务器上的文件，已确保是最新的文件
                 sshPut remote: server, from: 'src/docker-compose-template.yaml', into: '.'
                 sshCommand remote: server, command: "mkdir -p src/product-service/api/scripts"
                 sshPut remote: server, from: 'src/product-service/api/scripts/init.sql', into: './src/product-service/api/scripts/init.sql'
 
-                echo "create network...."       
+                echo "create docker network..."       
                 sshCommand remote: server, command: "docker network ls|grep backend > /dev/null || docker network create --driver bridge backend"
                 sshCommand remote: server, command: "docker network ls|grep frontend > /dev/null || docker network create --driver bridge frontend"
 
                 // 下面的 docker-compose-template.yaml 已经复制到根目录下，不用再调整
-                echo "stopping previous docker containers...."       
+                echo "stopping previous docker containers..."       
                 sshCommand remote: server, command: "docker login ${BOATHOUSE_CONTAINER_REGISTRY} -u ${CREDS_GITHUB_REGISTRY_USR} -p ${CREDS_GITHUB_REGISTRY_PSW}"
                 sshCommand remote: server, command: "docker-compose -f docker-compose-template.yaml -p boat-house-backend down"
                 
                 echo "pulling newest docker images..."
                 sshCommand remote: server, command: "docker-compose -f docker-compose-template.yaml -p boat-house-backend pull"
                 
-                echo "restarting new docker containers...."
+                echo "restarting new docker containers..."
                 sshCommand remote: server, command: "docker-compose -f docker-compose-template.yaml -p boat-house-backend up -d"
                 
-                echo "successfully started!"
+                echo "successfully started!..."
               }
             } 
         }
@@ -167,7 +168,7 @@ pipeline {
         stage('Jmeter') {
           steps {
             script{
-                echo "waitting for the sevice up...."
+                echo "waitting for the sevice up..."
                 sleep 80
                 sh "ls -al ./test/jmeter"
                 sh "cd test/jmeter && find . -name '*.log' -delete"
