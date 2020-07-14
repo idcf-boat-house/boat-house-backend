@@ -34,8 +34,6 @@ pipeline {
         stage('before-build'){
           steps {
             sh "printenv"
-
-            
           }
         }
 
@@ -50,11 +48,11 @@ pipeline {
               steps {
                 sh 'mvn clean cobertura:cobertura'
 
-                echo "docker build"
+                echo "docker build..."
                 sh "docker build -f src/statistics-service/api/Dockerfile -t ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/statistics_service_api:${env.BRANCH_NAME}-${env.BUILD_ID} -t ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/statistics_service_api:latest src/statistics-service/api"
                 sh "docker build -f src/statistics-service/worker/Dockerfile -t ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/statistics_service_worker:${env.BRANCH_NAME}-${env.BUILD_ID} -t ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/statistics_service_worker:latest src/statistics-service/worker"
 
-                echo "docker login"
+                echo "docker login..."
                 sh "docker login ${BOATHOUSE_CONTAINER_REGISTRY} -u ${CREDS_GITHUB_REGISTRY_USR} -p ${CREDS_GITHUB_REGISTRY_PSW}"
 
                 echo "push service api..."
@@ -72,12 +70,12 @@ pipeline {
               steps {
                 sh 'mvn clean cobertura:cobertura'
 
-                echo "docker-compose restart"
+                echo "docker-compose restart..."
                 sh "docker-compose -f src/product-service/api/docker-compose.build.yaml stop"
                 sh "docker-compose -f src/product-service/api/docker-compose.build.yaml up"
 
                 // junit
-                echo "junit"
+                echo "junit..."
                 junit 'src/product-service/api/target/surefire-reports/**/TEST-*.xml'
 
                 // Requires Cobertura plugin to archive and display converage report
@@ -85,10 +83,10 @@ pipeline {
                 echo "Archive coverage report"                
                 cobertura autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: 'src/product-service/api/target/site/cobertura/coverage.xml', conditionalCoverageTargets: '70, 0, 0', failUnhealthy: false, failUnstable: false, lineCoverageTargets: '80, 0, 0', maxNumberOfBuilds: 0, methodCoverageTargets: '80, 0, 0', onlyStable: false, sourceEncoding: 'ASCII', zoomCoverageChart: false
                                 
-                echo "docker build"
+                echo "docker build..."
                 sh "docker build -f src/product-service/api/Dockerfile.image -t ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/product_service_api:${env.BRANCH_NAME}-${env.BUILD_ID} -t ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/product_service_api:latest src/product-service/api"
 
-                echo "docker login"
+                echo "docker login..."
                 sh "docker login ${BOATHOUSE_CONTAINER_REGISTRY} -u ${CREDS_GITHUB_REGISTRY_USR} -p ${CREDS_GITHUB_REGISTRY_PSW}"
 
                 // push
@@ -109,7 +107,7 @@ pipeline {
                 sh "docker-compose -f src/account-service/api/docker-compose.build.yaml up"
 
                 // junit
-                echo "junit"
+                echo "junit...."
                 junit 'src/account-service/api/target/surefire-reports/**/TEST-*.xml'
                
                 // Requires Cobertura plugin to archive and display converage report
@@ -117,10 +115,10 @@ pipeline {
                 echo "Archive coverage report"  
                 cobertura autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: 'src/account-service/api/target/site/cobertura/coverage.xml', conditionalCoverageTargets: '70, 0, 0', failUnhealthy: false, failUnstable: false, lineCoverageTargets: '80, 0, 0', maxNumberOfBuilds: 0, methodCoverageTargets: '80, 0, 0', onlyStable: false, sourceEncoding: 'ASCII', zoomCoverageChart: false
               
-                echo "docker build"
+                echo "docker build...."
                 sh "docker build -f src/account-service/api/Dockerfile.image -t ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/account_service_api:${env.BRANCH_NAME}-${env.BUILD_ID} -t ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/account_service_api:latest src/account-service/api"
                 
-                echo "docker login"
+                echo "docker login...."
                 sh "docker login ${BOATHOUSE_CONTAINER_REGISTRY} -u ${CREDS_GITHUB_REGISTRY_USR} -p ${CREDS_GITHUB_REGISTRY_PSW}"
 
                 // push
