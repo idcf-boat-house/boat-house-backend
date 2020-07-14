@@ -107,9 +107,9 @@ pipeline {
                 sh "docker-compose -f src/account-service/api/docker-compose.build.yaml up"
 
                 // junit
-                echo "junit..."
-                junit 'src/account-service/api/target/surefire-reports/**/TEST-*.xml'
-                publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: './src/account-service/api/target/site/jacoco-it', reportFiles: 'index.html', reportName: 'Junit Report', reportTitles: ''])
+                // echo "junit..."
+                // junit 'src/account-service/api/target/surefire-reports/**/TEST-*.xml'
+                // publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: './src/account-service/api/target/site/jacoco-it', reportFiles: 'index.html', reportName: 'Junit Report', reportTitles: ''])
 
                 // Requires Cobertura plugin to archive and display converage report
                 // https://plugins.jenkins.io/cobertura/
