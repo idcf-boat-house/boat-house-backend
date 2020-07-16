@@ -238,7 +238,7 @@ pipeline {
       always {
         sh "sudo git clean -fdx"
 
-        sh "docker rmi $(docker images | grep none | awk '{print \$3}')"
+        sh "docker rmi \$(docker images | grep none | awk '{print \$3}')"
         //sh "sudo rm -rf src/product-service/api/target"
         //sh "sudo rm -rf src/account-service/api/target"
       }
