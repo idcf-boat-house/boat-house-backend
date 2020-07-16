@@ -64,15 +64,7 @@ pipeline {
                 sh "docker push ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/statistics_service_worker:latest"
                 sh "docker push ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/statistics_service_worker:${env.BRANCH_NAME}-${env.BUILD_ID}"
               }
-              post {
-                success {
-                  sh "docker rmi ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/statistics_service_api:latest"
-                  sh "docker rmi ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/statistics_service_api:${env.BRANCH_NAME}-${env.BUILD_ID}"
-
-                  sh "docker rmi ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/statistics_service_worker:latest"
-                  sh "docker rmi ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/statistics_service_worker:${env.BRANCH_NAME}-${env.BUILD_ID}"
-                }
-              }
+             
             }
 
             // 产品服务打包
@@ -108,12 +100,7 @@ pipeline {
                 echo "Publish Junit Report..."
                 publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: './src/product-service/api/target/site/jacoco-it', reportFiles: 'index.html', reportName: 'Junit Report', reportTitles: ''])
               }
-              post {
-                success {
-                  sh "docker rmi ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/product_service_api:latest"
-                  sh "docker rmi ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/product_service_api:${env.BRANCH_NAME}-${env.BUILD_ID}"
-                }
-              }
+
             }
             
             // 用户信息服务器打包
@@ -144,12 +131,7 @@ pipeline {
                 sh "docker push ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/account_service_api:latest"
                 sh "docker push ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/account_service_api:${env.BRANCH_NAME}-${env.BUILD_ID}"
               }
-              post {
-                success {
-                  sh "docker rmi ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/account_service_api:latest"
-                  sh "docker rmi ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/account_service_api:${env.BRANCH_NAME}-${env.BUILD_ID}"
-                }
-              }
+
             }
           }
         }
@@ -241,6 +223,20 @@ pipeline {
         sh "docker rmi \$(docker images | grep none | awk '{print \$3}')"
         //sh "sudo rm -rf src/product-service/api/target"
         //sh "sudo rm -rf src/account-service/api/target"
+      }
+      success 
+      {
+        sh "docker rmi ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/statistics_service_api:latest"
+        sh "docker rmi ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/statistics_service_api:${env.BRANCH_NAME}-${env.BUILD_ID}"
+
+        sh "docker rmi ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/statistics_service_worker:latest"
+        sh "docker rmi ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/statistics_service_worker:${env.BRANCH_NAME}-${env.BUILD_ID}"
+
+        sh "docker rmi ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/account_service_api:latest"
+        sh "docker rmi ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/account_service_api:${env.BRANCH_NAME}-${env.BUILD_ID}"
+
+        sh "docker rmi ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/product_service_api:latest"
+        sh "docker rmi ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/product_service_api:${env.BRANCH_NAME}-${env.BUILD_ID}"
       }
     }
   }
