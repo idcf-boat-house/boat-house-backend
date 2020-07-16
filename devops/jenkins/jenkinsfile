@@ -64,6 +64,15 @@ pipeline {
                 sh "docker push ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/statistics_service_worker:latest"
                 sh "docker push ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/statistics_service_worker:${env.BRANCH_NAME}-${env.BUILD_ID}"
               }
+              post {
+                success {
+                  sh "docker rmi ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/statistics_service_api:latest"
+                  sh "docker rmi ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/statistics_service_api:${env.BRANCH_NAME}-${env.BUILD_ID}"
+
+                  sh "docker rmi ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/statistics_service_api:latest"
+                  sh "docker rmi ${BOATHOUSE_CONTAINER_REGISTRY}/${BOATHOUSE_ORG_NAME}/boat-house-backend/statistics_service_api:${env.BRANCH_NAME}-${env.BUILD_ID}"
+                }
+              }
             }
 
             // 产品服务打包
