@@ -78,7 +78,7 @@ pipeline {
             // 产品服务打包
             stage('build-product-service') {
               steps {
-                sh 'mvn clean cobertura:cobertura'
+                //sh 'mvn clean cobertura:cobertura'
 
                 echo "docker-compose restart..."
                 sh "docker-compose -f src/product-service/api/docker-compose.build.yaml stop"

@@ -5,7 +5,7 @@ COPY src/account-service/api/src /build2/src/
 WORKDIR /build1/
 RUN mvn package && mvn cobertura:cobertura
 
-COPY src/account-service/api/pom.xml /build2/
+COPY src/product-service/api/pom.xml /build2/
 COPY src/product-service/api/src /build1/src/
 WORKDIR /build2/
 RUN mvn package && mvn cobertura:cobertura
