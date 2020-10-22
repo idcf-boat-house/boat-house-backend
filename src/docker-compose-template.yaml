@@ -18,7 +18,7 @@ services:
             - backend
 
     statistics-service-redis:
-        image: #{BOATHOUSE_CONTAINER_REGISTRY}#/#{BOATHOUSE_ORG_NAME}#/boat-house-backend/redis:alpine
+        image: redis:alpine
         restart: always
         ports:
             - 6379:6379
@@ -26,7 +26,7 @@ services:
             - frontend
 
     statistics-service-db:
-        image: #{BOATHOUSE_CONTAINER_REGISTRY}#/#{BOATHOUSE_ORG_NAME}#/boat-house-backend/postgres:9.4
+        image: postgres:9.4
         restart: always
         volumes:
             - db-data:/var/lib/postgresql/data
@@ -52,7 +52,7 @@ services:
             - backend
 
     product-service-db:
-        image: #{BOATHOUSE_CONTAINER_REGISTRY}#/#{BOATHOUSE_ORG_NAME}#/boat-house-backend/mysql:5.6
+        image: mysql:5.6
         command: --default-authentication-plugin=mysql_native_password
         restart: always
         volumes:
