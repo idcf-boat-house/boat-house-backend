@@ -4,13 +4,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<repositories>
 		<repository>
-			<!--<id>huaweicloud</id>
+			<id>huaweicloud</id>
 			<name>huawei</name>
-			<url>https://repo.huaweicloud.com/repository/maven/</url>-->
+			<url>https://repo.huaweicloud.com/repository/maven/</url>
 
-			<id>nexus-repository</id>
-			<name>nexus</name>
-			<url>http://tools-nexus.boat-house.cn/repository/maven-central/</url>
 			
 			<layout>default</layout>
 			<releases>
