@@ -81,8 +81,8 @@ pipeline {
                 //sh 'mvn clean cobertura:cobertura'
 
                 echo "docker-compose restart..."
-                sh "docker-compose -f src/product-service/api/docker-compose.build.yaml stop"
-                sh "docker-compose -f src/product-service/api/docker-compose.build.yaml up"
+                sh "docker-compose -f src/product-service/api/docker-compose.build.yaml -p api_product stop"
+                sh "docker-compose -f src/product-service/api/docker-compose.build.yaml -p api_product up"
 
                 // junit
                 echo "junit..."
@@ -116,8 +116,8 @@ pipeline {
             stage('build-account-service') {
               steps {
                 echo "docker-compose restart..."
-                sh "docker-compose -f src/account-service/api/docker-compose.build.yaml stop"
-                sh "docker-compose -f src/account-service/api/docker-compose.build.yaml up"
+                sh "docker-compose -f src/account-service/api/docker-compose.build.yaml -p api_account stop"
+                sh "docker-compose -f src/account-service/api/docker-compose.build.yaml -p api_account up"
 
                 // junit
                 // echo "junit..."
