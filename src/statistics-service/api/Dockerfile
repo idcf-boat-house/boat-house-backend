@@ -2,7 +2,7 @@ FROM node:12.14.1
 
 WORKDIR /app
 
-RUN npm config set registry http://tools-nexus.boat-house.cn/repository/npm-proxy/
+RUN npm config set registry https://mirrors.huaweicloud.com/repository/npm/
 ADD package.json /app/package.json
 RUN npm install && npm ls
 RUN mv /app/node_modules /node_modules
