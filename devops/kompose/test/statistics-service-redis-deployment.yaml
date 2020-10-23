@@ -15,7 +15,7 @@ spec:
         app: statistics-service-redis
     spec:
       containers:
-      - image: #{BOATHOUSE_CONTAINER_REGISTRY}#/#{BOATHOUSE_ORG_NAME}#/boat-house-backend/redis:alpine
+      - image: redis:alpine
         name: redis
         ports:
         - containerPort: 6379

@@ -16,7 +16,7 @@ spec:
         app: statistics-service-db
     spec:
       containers:
-      - image: #{BOATHOUSE_CONTAINER_REGISTRY}#/#{BOATHOUSE_ORG_NAME}#/boat-house-backend/postgres:9.4
+      - image: postgres:9.4
         name: statistics-service-db
         env:
           - name: POSTGRES_HOST_AUTH_METHOD
