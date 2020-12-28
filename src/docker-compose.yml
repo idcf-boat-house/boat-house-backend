@@ -67,6 +67,17 @@ services:
             - frontend
             - backend
 
+    phpmyadmin:
+        image: phpmyadmin:5.0.4-apache
+        restart: always
+        ports:
+            - 8080:80
+        environment:
+            - PMA_ARBITRARY=1
+        networks:
+            - frontend
+            - backend
+
 networks:
     frontend:
     backend:
