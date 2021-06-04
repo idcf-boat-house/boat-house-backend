@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: phpmyadmin
+  namespace: #{DEPLOY_K8S_NAMESPACE_TEST}#
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:
+      app: phpmyadmin
+  template:
+    metadata:
+      labels:
+        app: phpmyadmin
+    spec:
+      containers:
+      - image: phpmyadmin:5.0.4-apache
+        name: phpmyadmin
+        ports:
+        - containerPort: 8080
+        env:
+          - name: PMA_ARBITRARY
+            value: "1"
+      imagePullSecrets:
+      - name: regcred
+      restartPolicy: Always

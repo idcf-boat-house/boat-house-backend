@@ -7,8 +7,6 @@
 			<id>huaweicloud</id>
 			<name>huawei</name>
 			<url>https://repo.huaweicloud.com/repository/maven/</url>
-
-			
 			<layout>default</layout>
 			<releases>
 				<enabled>true</enabled>
