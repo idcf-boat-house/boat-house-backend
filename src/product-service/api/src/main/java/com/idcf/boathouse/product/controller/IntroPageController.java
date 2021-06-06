@@ -18,6 +18,17 @@ public class IntroPageController {
 
 	@Autowired
 	private IntroPageService introPageService;
+
+	private void LetsSleep(int milliseconds)
+	{
+		try{
+			Thread.sleep(milliseconds);
+		}catch(InterruptedException ex)
+		{
+			Thread.currentThread().interrupt();
+		}
+	}
+
 	@RequestMapping(value = "intro_page", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
 	@ResponseBody
 	@ApiOperation("添加介绍页内容")
@@ -45,6 +56,7 @@ public class IntroPageController {
 	@ApiOperation("根据Id获取介绍页")
 	//public IntroPage GetFoodCategory(@RequestParam String page_id){
 	public IntroPageFront getIntroPage(@PathVariable("page_id") String page_id){
+		LetsSleep(500);
 		return introPageService.getIntroPage(page_id);
 	}
 }

@@ -22,6 +22,16 @@ public class FoodController extends BaseController{
 	@Autowired
 	public FoodService foodService;
 
+	private void LetsSleep(int milliseconds)
+	{
+		try{
+			Thread.sleep(milliseconds);
+		}catch(InterruptedException ex)
+		{
+			Thread.currentThread().interrupt();
+		}
+	}
+
 	@RequestMapping(value= "Food", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
 	@ResponseBody
 	@ApiOperation("添加菜品")
@@ -34,6 +44,7 @@ public class FoodController extends BaseController{
 		foodPost.price = price;
 		foodPost.description = description;
 		foodPost.picture = picture;
+		LetsSleep(200);
 		foodService.insertOrUpdateFood(foodPost);
 		return super.info(BaseController.CODE_OK,"添加菜品成功", null);
 	}
@@ -56,6 +67,7 @@ public class FoodController extends BaseController{
 		{
 			foodPost.picture = picture;
 		}
+		LetsSleep(100);
 		foodService.insertOrUpdateFood(foodPost);
 		return super.info(BaseController.CODE_OK,"更新菜品成功", null);
 	}
@@ -72,6 +84,7 @@ public class FoodController extends BaseController{
 	@ResponseBody
 	@ApiOperation("获取所有菜品")
 	public Map<String, Object> GetFoods(@RequestParam(required = false) Integer categoryId){
+		LetsSleep(500);
 		List<Map<String, Object>> list = foodService.listFood(categoryId);
 		return super.info(BaseController.CODE_OK, "获取菜品成功", list);
 	}
@@ -81,6 +94,7 @@ public class FoodController extends BaseController{
 	@ApiOperation("根据Id获取菜品")
 	public Map<String, Object> GetFood(@RequestParam String id){
 		Food food = foodService.getFood(id);
+		LetsSleep(500);
 		return super.info(BaseController.CODE_OK, "获取菜品成功", food);
 	}
 
@@ -89,7 +103,7 @@ public class FoodController extends BaseController{
 	@ResponseBody
 	@ApiOperation("菜品模糊查询")
 	public List<Map<String, Object>> GetFoodLike(@RequestParam String name) {
-
+		LetsSleep(200);
 		JdbcUtils jdbcUtils = new JdbcUtils();
 		jdbcUtils.getConnection();
 		String sql = "select * from Food where Name like ?";
