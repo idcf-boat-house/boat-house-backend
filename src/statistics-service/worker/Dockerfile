@@ -1,7 +1,7 @@
-FROM mcr.microsoft.com/dotnet/core/runtime:2.1-stretch-slim AS base
+FROM registry.cn-hangzhou.aliyuncs.com/boathouse/dotnet-core-runtime:2.1-stretch-slim AS base
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/core/sdk:2.1-stretch AS build
+FROM registry.cn-hangzhou.aliyuncs.com/boathouse/boathouse-core-sdk:2.1-stretch AS build
 WORKDIR /src
 COPY ["Worker.csproj", ""]
 RUN dotnet restore "./Worker.csproj"
