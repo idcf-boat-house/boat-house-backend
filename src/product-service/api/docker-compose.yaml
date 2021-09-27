@@ -1,0 +1,34 @@
+version: "3"
+services:
+  product-service-db:
+    container_name: product-service-db
+    command:
+      - --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: P2ssw0rd
+    image: mysql:5.6
+    networks:
+      - smartide-network
+    ports:
+      - "3306"
+    restart: always
+    volumes:
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+  product-service-dev:
+    container_name: product-service-dev
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+      ROOT_PASSWORD: root123
+      TZ: Asia/Shanghai
+    image: registry.cn-hangzhou.aliyuncs.com/smartide/smartide-java:latest
+    networks:
+      - smartide-network
+    ports:
+      - 6800:3000
+      - 6880:8080
+      - "6022:22"
+    restart: always
+    volumes:
+      - .:/home/project
+networks:
+  smartide-network:
