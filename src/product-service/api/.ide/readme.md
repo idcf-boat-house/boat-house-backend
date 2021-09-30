@@ -9,6 +9,11 @@ cd /boat-house-backend/src/product-service/api
 smartide start
 ```
 
+如下图所示，代表启动成功
+
+<img style='width:80%' src='./images/java-container-start.png' />
+
+
 # 开发调试
 1. 在浏览器中，点击 terminal ，点击 new terminal， 在打开的 terminal 窗口中运行 “mvn package”，直至运行结束
 <image style='width:80%' src='./images/java-mvn-package-success.png' />
