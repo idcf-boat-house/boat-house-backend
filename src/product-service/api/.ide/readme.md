@@ -21,4 +21,4 @@ smartide start
 
 
 # 配置文件
-./.dea.yaml
+[.ide.yaml](.ide.yaml)
