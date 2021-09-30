@@ -5,7 +5,7 @@
 
 ```
 git clone https://github.com/idcf-boat-house/boat-house-backend.git
-cd boat-house-backend
+cd /boat-house-backend/src/product-service/api
 smartide start
 ```
 
