@@ -6,11 +6,15 @@ workspace:
   dev-container:
     service-name: product-service-dev
     webide-port: 6800
+    ide-type: vscode
+    volumes: 
+        git-config: true
+        ssh-key: true
   services:
 
     product-service-dev:
       container_name: product-service-dev
-      image: registry.cn-hangzhou.aliyuncs.com/smartide/smartide-java:latest
+      image: registry.cn-hangzhou.aliyuncs.com/smartide/smartide-java-opvscode:latest
       restart: always
       environment:
         POSTGRES_HOST_AUTH_METHOD: trust
