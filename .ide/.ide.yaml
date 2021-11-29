@@ -13,7 +13,7 @@ workspace:
   services:
     boathouse-backend-dev:
       container_name: boathouse-backend-dev
-      image: registry.cn-hangzhou.aliyuncs.com/smartide/smartide-java-opvscode:latest
+      image: registry.cn-hangzhou.aliyuncs.com/smartide/smartide-java-bh:latest
       restart: always
       environment:
         ROOT_PASSWORD: root123
