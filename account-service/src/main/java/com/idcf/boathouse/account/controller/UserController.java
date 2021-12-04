@@ -60,13 +60,4 @@ public class UserController {
         return ResponseData.success(users);
     }
 
-    @ApiOperation(value = "获取用户详情")
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseData getUser(@PathVariable Integer id) {
-        // 处理"/users/{id}"的GET请求，用来获取url中id值的User信息
-        // url中的id可通过@PathVariable绑定到函数的参数中
-        User user = userService.getOne(new QueryWrapper<User>().select("id", "account", "age", "email").eq("id", id));
-        return ResponseData.success(user);
-    }
-
 }
