@@ -60,4 +60,12 @@ public class UserController {
         return ResponseData.success(users);
     }
 
+
+    @ApiOperation(value = "获取用户详细信息")
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseData getUser(@PathVariable Integer id){
+        User user = userService.getOne(new QueryWrapper<User>().select("id", "account", "age", "email").eq("id", id));
+        return ResponseData.success(user);
+    }
+
 }
