@@ -1,0 +1,89 @@
+version: smartide/v0.2
+orchestrator:
+  type: docker-compose
+  version: 3
+workspace:
+  dev-container:
+    service-name: boathouse-backend-dev
+    webide-port: 6800
+    ports:
+      webide-port: 6800
+      ssh: 6822
+      product-service-api: 8100
+      account-service-api: 8101
+      boathouse-backend-db: 3306
+      phpmyadmin: 8090
+      jenkins: 8080
+    ide-type: jb-projector
+    volumes: 
+      git-config: true
+      ssh-key: true
+  services:
+    boathouse-backend-dev:
+      container_name: boathouse-backend-dev
+      image: registry.cn-hangzhou.aliyuncs.com/smartide/smartide-jetbrain-idea-c:latest
+      restart: always
+      environment:
+        TZ: Asia/Shanghai
+      volumes:
+        - .:/home/project
+        - $HOME/.m2/repository:/root/.m2/repository
+        - /var/run/docker.sock:/var/run/docker.sock
+      expose:
+        - 8100
+        - 8101
+        - 8887
+      ports:
+        - 8100:8100
+        - 8101:8101
+      networks:
+        - boathouse-dev-network
+
+    boathouse-backend-db:
+      container_name: boathouse-backend-db
+      image: registry.cn-hangzhou.aliyuncs.com/boathouse/mysql:5.6
+      command: 
+        - --default-authentication-plugin=mysql_native_password
+      restart: always
+      expose:
+        - 3306
+      ports:
+        - 3306:3306
+      environment:
+        MYSQL_ROOT_PASSWORD: P2ssw0rd
+      volumes:
+        - './.ide/.data/mysql-data:/var/lib/mysql'
+      networks:
+        - boathouse-dev-network
+
+    phpmyadmin:
+      container_name: phpmyadmin
+      image: registry.cn-hangzhou.aliyuncs.com/boathouse/phpmyadmin:5.0.4-apache
+      restart: always
+      expose:
+        - 8090
+      ports:
+        - 8090:80
+      environment:
+        PMA_ARBITRARY: "1"
+      networks:
+        - boathouse-dev-network
+        
+    jenkins:
+      container_name: jenkins
+      image: registry.cn-hangzhou.aliyuncs.com/boathouse/jenkins:lts
+      user: root
+      restart: always
+      expose:
+        - 8080
+      ports:
+        - '8080:8080'
+        - '50000:50000'
+      volumes:
+        - './.ide/.data/jenkins_home:/var/jenkins_home'
+      networks:
+         - boathouse-dev-network
+
+  networks:
+    boathouse-dev-network:
+      external: true
