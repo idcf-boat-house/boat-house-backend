@@ -24,7 +24,7 @@ workspace:
       image: registry.cn-hangzhou.aliyuncs.com/smartide/smartide-java-bh:latest
       restart: always
       environment:
-        ROOT_PASSWORD: root123
+        ROOT_PASSWORD: smartide123.@IDE
         TZ: Asia/Shanghai
       volumes:
         - $HOME/.m2/repository:/root/.m2/repository
@@ -53,7 +53,7 @@ workspace:
       environment:
         MYSQL_ROOT_PASSWORD: P2ssw0rd
       volumes:
-        - './.ide/.temp/mysql-data:/var/lib/mysql'
+        - './.ide/.data/mysql-data:/var/lib/mysql'
       networks:
         - boathouse-dev-network
 
@@ -81,7 +81,7 @@ workspace:
         - '8080:8080'
         - '50000:50000'
       volumes:
-        - './.ide/.temp/jenkins_home:/var/jenkins_home'
+        - './.ide/.data/jenkins_home:/var/jenkins_home'
       networks:
          - boathouse-dev-network
 
