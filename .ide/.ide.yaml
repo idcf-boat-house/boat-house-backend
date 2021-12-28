@@ -24,7 +24,8 @@ workspace:
       image: registry.cn-hangzhou.aliyuncs.com/smartide/smartide-java-bh:latest
       restart: always
       environment:
-        ROOT_PASSWORD: root
+        ROOT_PASSWORD: root123
+        LOCAL_USER_PASSWORD: root123
         TZ: Asia/Shanghai
       volumes:
         - $HOME/.m2/repository:/root/.m2/repository
