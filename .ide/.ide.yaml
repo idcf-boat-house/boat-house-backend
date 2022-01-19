@@ -35,9 +35,11 @@ workspace:
         - 3000
         - 8100
         - 8101
+        - 22
       ports:
         - 8100:8100
         - 8101:8101
+        - 6822:22
       networks:
         - boathouse-dev-network
 
