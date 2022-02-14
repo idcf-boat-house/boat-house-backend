@@ -21,7 +21,7 @@ workspace:
   services:
     boathouse-backend-dev:
       container_name: boathouse-backend-dev
-      image: registry.cn-hangzhou.aliyuncs.com/smartide/smartide-java-bh:latest
+      image: registry.cn-hangzhou.aliyuncs.com/smartide/smartide-java-v2-vscode:openjdk-11-jdk
       restart: always
       environment:
         ROOT_PASSWORD: root123
@@ -31,11 +31,6 @@ workspace:
         - $HOME/.m2/repository:/root/.m2/repository
         - .:/home/project
         - /var/run/docker.sock:/var/run/docker.sock
-      expose:
-        - 3000
-        - 8100
-        - 8101
-        - 22
       ports:
         - 8100:8100
         - 8101:8101
