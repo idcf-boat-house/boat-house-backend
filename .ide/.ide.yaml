@@ -5,7 +5,6 @@ orchestrator:
 workspace:
   dev-container:
     service-name: boathouse-backend-dev
-    webide-port: 6800
     ports:
       webide-port: 6800
       ssh: 6822
