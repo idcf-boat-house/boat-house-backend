@@ -21,7 +21,7 @@ workspace:
   services:
     boathouse-backend-dev:
       container_name: boathouse-backend-dev
-      image: registry.cn-hangzhou.aliyuncs.com/smartide/smartide-jetbrain-idea-c:latest
+      image: registry.cn-hangzhou.aliyuncs.com/smartide/smartide-java-v2-jetbrains-idea:2021.2.3-openjdk-11-jdk-2081
       restart: always
       environment:
         TZ: Asia/Shanghai
@@ -29,13 +29,11 @@ workspace:
         - .:/home/project
         - $HOME/.m2/repository:/root/.m2/repository
         - /var/run/docker.sock:/var/run/docker.sock
-      expose:
-        - 8100
-        - 8101
-        - 8887
       ports:
         - 8100:8100
         - 8101:8101
+        - 6800:8887
+        - 6822:22
       networks:
         - boathouse-dev-network
 
