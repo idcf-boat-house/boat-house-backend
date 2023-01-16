@@ -1,5 +1,5 @@
 // -------------------------------------
-// baot house backend jenkinsfile
+// boat house backend jenkinsfile
 // -------------------------------------
 
 def getHost() {
